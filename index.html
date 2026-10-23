@@ -1,10 +1,10 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Chambre claire</title>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Calk Draw</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
-/* Plein écran : la scène (caméra, photo ou feuille) occupe tout ; bandeau fin en haut, tiroir de réglages graphite en bas */
+/* Plein écran : la scène (feuille ou photo du dessin) occupe tout ; bouton Réglages flottant en haut à droite, tiroir graphite en bas, caché par défaut */
 :root{
   --graphite:#1a1c20;
   --graphite-2:#24272c;
@@ -33,46 +33,32 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;margin
 
 /* Scène */
 .scene{position:absolute;inset:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;background:var(--graphite)}
-.scene.verrou{cursor:default}
 .feuille{position:absolute;inset:0;background-color:var(--papier);background-image:linear-gradient(var(--carreau) 1px,transparent 1px),linear-gradient(90deg,var(--carreau) 1px,transparent 1px);background-size:20px 20px;color:var(--encre)}
 .monde{position:absolute;inset:0}
-.monde.miroir{transform:scaleX(-1)}
-.monde.gris{filter:grayscale(1)}
-#video,#fond{position:absolute;inset:0;width:100%;height:100%;max-width:none;background:var(--graphite)}
-#video{object-fit:cover}
-#fond{object-fit:contain}
+#fond{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:contain;background:var(--graphite)}
 #ref{position:absolute;left:0;top:0;max-width:none;transform-origin:50% 50%;pointer-events:none;will-change:transform}
 #grille{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
-.consigne{position:absolute;top:3.8rem;left:0;right:0;display:grid;gap:.25rem;max-width:36rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:.86rem;line-height:1.4}
-.consigne h1{margin:0;font-family:var(--f-titre);font-style:italic;font-weight:400;font-size:1.4rem;line-height:1.1;text-wrap:balance}
+.consigne{position:absolute;top:4.2rem;left:0;right:0;display:grid;gap:.3rem;max-width:36rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:.88rem;line-height:1.4}
+.consigne h1{margin:0;font-family:var(--f-titre);font-style:italic;font-weight:400;font-size:1.45rem;line-height:1.1;text-wrap:balance}
 .consigne p{margin:0}
 .consigne .note{font-size:.8rem;color:var(--encre-doux)}
 
-/* Bandeau */
-.entete{position:absolute;top:0;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:var(--voile);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--mine)}
-.identite{display:grid;gap:.1rem;min-width:0}
-.nom{font-family:var(--f-titre);font-style:italic;font-size:1.35rem;line-height:1.05}
-.ref-nom{font-size:.74rem;color:var(--texte-doux);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
+/* Boutons */
 .cache{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0);pointer-events:none}
-.bouton{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;min-height:40px;padding:0 .9rem;border-radius:999px;border:1px solid var(--mine);background:var(--graphite-2);font-size:.88rem;white-space:nowrap;flex:none}
+.bouton{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;min-height:40px;padding:0 1rem;border-radius:999px;border:1px solid var(--mine);background:var(--graphite-2);font-size:.9rem;white-space:nowrap;flex:none}
 .bouton[aria-pressed="true"]{background:var(--hb);border-color:var(--hb);color:var(--graphite);font-weight:700}
-.bouton.action{border-color:var(--hb);color:var(--hb)}
+.bouton.principal{flex:1;min-width:0;background:var(--hb);border-color:var(--hb);color:var(--graphite);font-weight:700}
+.flottant{position:absolute;z-index:3;top:.75rem;right:max(16px,env(safe-area-inset-right,0px));background:var(--voile);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 4px 16px var(--ombre)}
 
 /* Tiroir de réglages */
 .tiroir{position:absolute;left:0;right:0;bottom:0;z-index:3;background:var(--voile);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--mine)}
-.tiroir-in{display:grid;gap:.65rem;max-width:40rem;margin:0 auto;padding-block:.75rem .9rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.tiroir-in{display:grid;gap:.65rem;max-width:40rem;margin:0 auto;padding-block:.8rem .9rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .rang-source{display:flex;gap:.5rem;align-items:center;min-width:0}
-.segment{display:flex;flex:1;min-width:0;padding:3px;border:1px solid var(--mine);border-radius:999px;background:var(--graphite)}
-.segment>*{display:flex;align-items:center;justify-content:center;flex:1;min-width:0;min-height:36px;border-radius:999px;font-size:.9rem;color:var(--texte-doux);white-space:nowrap;cursor:pointer;user-select:none;-webkit-user-select:none}
-.segment>[aria-pressed="true"]{background:var(--texte);color:var(--graphite);font-weight:700}
 .reglage{display:grid;grid-template-columns:6rem minmax(0,1fr) 3.4rem;align-items:center;gap:.75rem}
 .reglage>label{font-size:.88rem}
 .reglage>.bouton{justify-self:start}
 .valeur{font-family:var(--f-chiffres);font-size:.82rem;text-align:right;font-variant-numeric:tabular-nums}
-.puces{display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;padding:2px;margin:-2px}
-.puces::-webkit-scrollbar{display:none}
 
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;margin:0;background:transparent;--p:50%}
 input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(var(--hb),var(--hb)) 0 0/var(--p) 100% no-repeat,var(--mine)}
@@ -82,44 +68,33 @@ input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:v
 input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--texte);border:3px solid var(--hb)}
 input[type=range]:disabled{opacity:.35}
 
-.message{position:absolute;z-index:4;top:3.7rem;left:50%;transform:translateX(-50%);width:min(30rem,calc(100% - 32px));padding:.7rem .9rem;border-radius:12px;background:var(--texte);color:var(--graphite);font-size:.88rem;line-height:1.4;box-shadow:0 6px 24px var(--ombre);cursor:pointer}
+.message{position:absolute;z-index:4;top:4rem;left:50%;transform:translateX(-50%);width:min(30rem,calc(100% - 32px));margin:0;padding:.7rem .9rem;border-radius:12px;background:var(--texte);color:var(--graphite);font-size:.88rem;line-height:1.4;box-shadow:0 6px 24px var(--ombre);cursor:pointer}
 </style>
 
 <div class="app">
-  <div class="scene" id="scene" aria-label="Zone de superposition : un doigt déplace la référence, deux doigts l'agrandissent et la tournent">
+  <div class="scene" id="scene" aria-label="Zone de comparaison : un doigt déplace la référence, deux doigts l'agrandissent et la tournent">
     <div class="feuille" id="feuille">
       <div class="consigne" id="consigne">
-        <h1>Dessine à travers ta référence</h1>
-        <p><b>Caméra</b> : téléphone fixé à 25–30 cm au-dessus de la feuille, tu suis la référence du crayon.</p>
-        <p><b>Photo</b> : ton dessin en photo, la référence calée par-dessus, les écarts sautent aux yeux.</p>
-        <p class="note">Un doigt déplace, deux doigts agrandissent et tournent. Gabarit d'exemple : charge ta photo avec « Référence ».</p>
+        <h1>Compare ton dessin au modèle</h1>
+        <p>Ouvre les réglages, prends ton dessin en photo, puis cale la référence par-dessus : un doigt la déplace, deux doigts l'agrandissent et la tournent.</p>
+        <p class="note">Gabarit de proportions affiché en exemple. Charge ta photo de modèle avec « Référence ».</p>
       </div>
     </div>
-    <div class="monde" id="monde">
-      <video id="video" playsinline muted autoplay hidden></video>
+    <div class="monde">
       <img id="fond" alt="Photo de ton dessin" hidden>
       <img id="ref" alt="" draggable="false" decoding="async">
     </div>
     <canvas id="grille" aria-hidden="true"></canvas>
   </div>
 
-  <header class="entete" id="entete">
-    <div class="identite">
-      <span class="nom">Chambre claire</span>
-      <span class="ref-nom" id="ref-nom">Référence : gabarit de proportions (exemple)</span>
-    </div>
-    <button class="bouton" id="btn-reglages" type="button" aria-expanded="true" aria-controls="tiroir">Réglages</button>
-  </header>
+  <button class="bouton flottant" id="btn-reglages" type="button" aria-expanded="false" aria-controls="tiroir">Réglages</button>
 
   <p class="message" id="message" role="status" hidden></p>
 
-  <section class="tiroir" id="tiroir" aria-label="Réglages">
+  <section class="tiroir" id="tiroir" aria-label="Réglages" hidden>
     <div class="tiroir-in">
       <div class="rang-source">
-        <div class="segment" role="group" aria-label="Fond">
-          <button type="button" id="btn-camera" aria-pressed="false">Caméra</button>
-          <label for="fichier-photo" id="btn-photo" role="button" tabindex="0" aria-pressed="false">Photo</label>
-        </div>
+        <label class="bouton principal" for="fichier-photo" id="btn-photo" role="button" tabindex="0">Prendre la photo</label>
         <label class="bouton" for="fichier-ref" id="btn-reference" role="button" tabindex="0">Référence</label>
       </div>
 
@@ -134,51 +109,37 @@ input[type=range]:disabled{opacity:.35}
         <input type="range" id="colonnes" min="2" max="16" step="1" value="6" aria-label="Nombre de colonnes du quadrillage">
         <output class="valeur" id="colonnes-val" for="colonnes">6 col.</output>
       </div>
-
-      <div class="puces">
-        <button class="bouton action" type="button" id="btn-capturer" hidden>Figer l'image</button>
-        <button class="bouton" type="button" id="btn-nb" aria-pressed="false">Noir et blanc</button>
-        <button class="bouton" type="button" id="btn-flou" aria-pressed="false">Plisser les yeux</button>
-        <button class="bouton" type="button" id="btn-miroir" aria-pressed="false">Miroir</button>
-        <button class="bouton" type="button" id="btn-verrou" aria-pressed="false">Verrouiller</button>
-        <button class="bouton" type="button" id="btn-centrer">Recentrer</button>
-      </div>
     </div>
   </section>
 
   <input type="file" id="fichier-ref" class="cache" accept="image/*" tabindex="-1">
-  <input type="file" id="fichier-photo" class="cache" accept="image/*" tabindex="-1">
+  <input type="file" id="fichier-photo" class="cache" accept="image/*" capture="environment" tabindex="-1">
 </div>
 
 <script>
 (() => {
   const $ = s => document.querySelector(s);
-  const scene = $('#scene'), monde = $('#monde'), video = $('#video'), fond = $('#fond'), ref = $('#ref');
-  const grille = $('#grille'), feuille = $('#feuille'), entete = $('#entete'), tiroir = $('#tiroir'), message = $('#message');
+  const scene = $('#scene'), fond = $('#fond'), ref = $('#ref'), grille = $('#grille');
+  const feuille = $('#feuille'), tiroir = $('#tiroir'), message = $('#message');
   const ui = {
-    camera: $('#btn-camera'), photo: $('#btn-photo'), reference: $('#btn-reference'),
+    photo: $('#btn-photo'), reference: $('#btn-reference'), reglages: $('#btn-reglages'),
     opacite: $('#opacite'), opaciteVal: $('#opacite-val'),
     grille: $('#btn-grille'), colonnes: $('#colonnes'), colonnesVal: $('#colonnes-val'),
-    capturer: $('#btn-capturer'), nb: $('#btn-nb'), flou: $('#btn-flou'), miroir: $('#btn-miroir'),
-    verrou: $('#btn-verrou'), centrer: $('#btn-centrer'), reglages: $('#btn-reglages'),
-    fichierRef: $('#fichier-ref'), fichierPhoto: $('#fichier-photo'), refNom: $('#ref-nom')
+    fichierRef: $('#fichier-ref'), fichierPhoto: $('#fichier-photo')
   };
 
   // État : position du centre de la référence (tx, ty) par rapport au centre de la scène, échelle s, rotation r
-  const st = { mode: 'repos', tx: 0, ty: 0, s: 1, r: 0, w: 0, h: 0, aCaler: true,
-    opacite: 0.5, grille: true, colonnes: 6, gris: false, flou: false, miroir: false, verrou: false };
+  const st = { mode: 'repos', tx: 0, ty: 0, s: 1, r: 0, w: 0, h: 0, aCaler: true, opacite: 0.5, grille: true, colonnes: 6 };
 
-  const CLE = 'chambre-claire-v1';
+  const CLE = 'calk-draw-v1';
   try {
     const p = JSON.parse(localStorage.getItem(CLE) || '{}');
     if (typeof p.opacite === 'number') st.opacite = Math.min(1, Math.max(0, p.opacite));
     if (typeof p.colonnes === 'number') st.colonnes = Math.min(16, Math.max(2, Math.round(p.colonnes)));
     if (typeof p.grille === 'boolean') st.grille = p.grille;
-    if (typeof p.gris === 'boolean') st.gris = p.gris;
-    if (typeof p.flou === 'boolean') st.flou = p.flou;
   } catch (e) {}
   function sauver() {
-    try { localStorage.setItem(CLE, JSON.stringify({ opacite: st.opacite, colonnes: st.colonnes, grille: st.grille, gris: st.gris, flou: st.flou })); } catch (e) {}
+    try { localStorage.setItem(CLE, JSON.stringify({ opacite: st.opacite, colonnes: st.colonnes, grille: st.grille })); } catch (e) {}
   }
 
   const hb = getComputedStyle(document.documentElement).getPropertyValue('--hb').trim() || '#f2c230';
@@ -258,9 +219,6 @@ input[type=range]:disabled{opacity:.35}
     const W = scene.clientWidth, H = scene.clientHeight;
     if (st.w) ref.style.transform = `translate(${W / 2 + st.tx - st.w / 2}px,${H / 2 + st.ty - st.h / 2}px) rotate(${st.r}rad) scale(${st.s})`;
     ref.style.opacity = st.opacite;
-    ref.style.filter = st.flou ? `blur(${(Math.max(st.w, st.h) * 0.012).toFixed(1)}px)` : 'none';
-    monde.classList.toggle('miroir', st.miroir);
-    monde.classList.toggle('gris', st.gris);
     tracerGrille(W, H);
   }
 
@@ -278,10 +236,7 @@ input[type=range]:disabled{opacity:.35}
     const cx = W / 2 + st.tx, cy = H / 2 + st.ty;
     const P = (u, v) => {
       const x = u - w / 2, y = v - h / 2;
-      let X = cx + x * cos - y * sin;
-      const Y = cy + x * sin + y * cos;
-      if (st.miroir) X = W - X;
-      return [X, Y];
+      return [cx + x * cos - y * sin, cy + x * sin + y * cos];
     };
     const segs = [];
     for (let i = 0; i <= st.colonnes; i++) segs.push([P(i * cote, 0), P(i * cote, h)]);
@@ -317,22 +272,15 @@ input[type=range]:disabled{opacity:.35}
     ui.colonnes.disabled = !st.grille;
     for (const el of [ui.opacite, ui.colonnes]) el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%');
     ui.grille.setAttribute('aria-pressed', st.grille);
-    ui.nb.setAttribute('aria-pressed', st.gris);
-    ui.flou.setAttribute('aria-pressed', st.flou);
-    ui.miroir.setAttribute('aria-pressed', st.miroir);
-    ui.verrou.setAttribute('aria-pressed', st.verrou);
-    ui.camera.setAttribute('aria-pressed', st.mode === 'camera');
-    ui.photo.setAttribute('aria-pressed', st.mode === 'photo');
-    ui.capturer.hidden = st.mode !== 'camera';
-    scene.classList.toggle('verrou', st.verrou);
+    ui.photo.textContent = st.mode === 'photo' ? 'Reprendre la photo' : 'Prendre la photo';
   }
 
-  /* ---------- Cadrage ---------- */
+  /* ---------- Cadrage automatique de la référence ---------- */
   function caler() {
     if (!st.w) return;
     const W = scene.clientWidth, H = scene.clientHeight;
-    let haut = entete.offsetHeight;
-    if (st.mode === 'repos') { const c = $('#consigne'); haut = Math.max(haut, c.offsetTop + c.offsetHeight); }
+    let haut = ui.reglages.offsetTop + ui.reglages.offsetHeight + 8;
+    if (st.mode === 'repos') { const c = $('#consigne'); haut = Math.max(haut, c.offsetTop + c.offsetHeight + 8); }
     const bas = tiroir.hidden ? H : tiroir.offsetTop;
     const dispo = Math.max(140, bas - haut);
     st.s = Math.min(W * 0.88 / st.w, dispo * 0.9 / st.h);
@@ -344,9 +292,7 @@ input[type=range]:disabled{opacity:.35}
   const doigts = new Map();
   function pos(e) {
     const b = scene.getBoundingClientRect();
-    let x = e.clientX - b.left; const y = e.clientY - b.top;
-    if (st.miroir) x = b.width - x;
-    return { x, y };
+    return { x: e.clientX - b.left, y: e.clientY - b.top };
   }
   // Similitude autour du point de pincement : c0 → c1, facteur k, rotation dt
   function transformer(c0, c1, k, dt) {
@@ -360,7 +306,7 @@ input[type=range]:disabled{opacity:.35}
     st.s = sNouv; st.r += dt;
   }
   scene.addEventListener('pointerdown', e => {
-    if (st.verrou || !st.w) return;
+    if (!st.w) return;
     try { scene.setPointerCapture(e.pointerId); } catch (err) {}
     doigts.set(e.pointerId, pos(e));
   });
@@ -385,7 +331,7 @@ input[type=range]:disabled{opacity:.35}
   scene.addEventListener('pointerup', lacher);
   scene.addEventListener('pointercancel', lacher);
   scene.addEventListener('wheel', e => {
-    if (st.verrou || !st.w) return;
+    if (!st.w) return;
     e.preventDefault();
     const c = pos(e);
     transformer(c, c, Math.exp(-e.deltaY * 0.0015), 0);
@@ -394,108 +340,51 @@ input[type=range]:disabled{opacity:.35}
 
   /* ---------- Messages ---------- */
   let minuterie = 0;
-  function annoncer(t, duree = 7000) {
+  function annoncer(t, duree = 6000) {
     message.textContent = t; message.hidden = false;
     clearTimeout(minuterie); minuterie = setTimeout(() => { message.hidden = true; }, duree);
   }
   message.addEventListener('click', () => { message.hidden = true; });
 
-  /* ---------- Sources ---------- */
-  let flux = null, eveil = null, urlFond = '', urlRef = '';
+  /* ---------- Photo du dessin et référence ---------- */
+  let urlFond = '', urlRef = '';
 
-  function arreterCamera() {
-    if (flux) { flux.getTracks().forEach(t => t.stop()); flux = null; }
-    video.srcObject = null;
-    if (eveil) { eveil.release().catch(() => {}); eveil = null; }
-  }
-  async function garderEveil() {
-    try { if ('wakeLock' in navigator && document.visibilityState === 'visible') eveil = await navigator.wakeLock.request('screen'); } catch (e) {}
-  }
-  document.addEventListener('visibilitychange', () => { if (st.mode === 'camera' && document.visibilityState === 'visible') garderEveil(); });
-
-  function definirMode(m) {
-    if (m !== 'camera') arreterCamera();
-    st.mode = m;
-    video.hidden = m !== 'camera';
-    fond.hidden = m !== 'photo';
-    feuille.hidden = m !== 'repos';
-    majUI(); dessiner();
-  }
-
-  const MSG_CLAUDE = "Sur une page Claude, la caméra en direct est bloquée, même dans Chrome. Ici, passe par « Photo » : prends ton dessin en photo et compare. Pour la caméra en direct, il faut la version hébergée en https.";
-  async function demarrerCamera() {
-    if (st.mode === 'camera') return;
-    const dansClaude = !!window.claude;
-    if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      annoncer(dansClaude ? MSG_CLAUDE : "La caméra en direct a besoin d'une page ouverte depuis une adresse https. En attendant, utilise « Photo ».");
-      return;
-    }
-    try {
-      flux = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
-    } catch (e) {
-      flux = null;
-      if (dansClaude) annoncer(MSG_CLAUDE);
-      else if (e.name === 'NotAllowedError') annoncer("Accès à la caméra refusé. Autorise la caméra pour ce site dans les réglages du navigateur, puis réessaie.");
-      else if (e.name === 'NotFoundError') annoncer("Aucune caméra trouvée sur cet appareil.");
-      else annoncer("La caméra n'a pas démarré (" + e.name + "). Ferme les autres applis qui l'utilisent, puis réessaie.");
-      return;
-    }
-    video.srcObject = flux;
-    try { await video.play(); } catch (e) {}
-    definirMode('camera');
-    garderEveil();
-    annoncer("Fixe le téléphone au-dessus de la feuille, puis touche « Verrouiller » pour ne plus déplacer la référence par erreur.");
-  }
-
-  function figer() {
-    const W = scene.clientWidth, H = scene.clientHeight, vw = video.videoWidth, vh = video.videoHeight;
-    if (!vw || !vh) return;
-    // recadre exactement la partie visible à l'écran, pour que la référence reste alignée
-    const k = Math.max(W / vw, H / vh), sw = W / k, sh = H / k;
-    const c = document.createElement('canvas');
-    c.width = Math.round(sw); c.height = Math.round(sh);
-    c.getContext('2d').drawImage(video, (vw - sw) / 2, (vh - sh) / 2, sw, sh, 0, 0, c.width, c.height);
-    c.toBlob(b => {
-      if (!b) return;
-      if (urlFond) URL.revokeObjectURL(urlFond);
-      urlFond = URL.createObjectURL(b);
-      fond.onload = () => { definirMode('photo'); annoncer("Image figée. Compare ton dessin à la référence en jouant sur l'opacité."); };
-      fond.src = urlFond;
-    }, 'image/jpeg', 0.92);
-  }
-
-  function chargerRef(f) {
-    if (!f || !f.type.startsWith('image/')) return;
-    if (urlRef) URL.revokeObjectURL(urlRef);
-    urlRef = URL.createObjectURL(f);
-    st.aCaler = true;
-    ref.dataset.nom = f.name || 'image collée';
-    ref.src = urlRef;
-  }
-  ref.addEventListener('load', () => {
-    st.w = ref.naturalWidth; st.h = ref.naturalHeight;
-    ref.style.width = st.w + 'px'; ref.style.height = st.h + 'px';
-    ui.refNom.textContent = 'Référence : ' + (ref.dataset.nom || 'gabarit de proportions (exemple)');
-    if (st.aCaler) { st.aCaler = false; caler(); }
-    dessiner();
-  });
-  ref.addEventListener('error', () => {
-    if (ref.src === GABARIT) return;
-    annoncer("Cette image ne s'ouvre pas. Essaie une photo au format JPEG ou PNG.");
-    ref.dataset.nom = ''; st.aCaler = true; ref.src = GABARIT;
-  });
-
-  ui.fichierRef.addEventListener('change', () => { chargerRef(ui.fichierRef.files[0]); ui.fichierRef.value = ''; });
   ui.fichierPhoto.addEventListener('change', () => {
     const f = ui.fichierPhoto.files[0];
     ui.fichierPhoto.value = '';
     if (!f) return;
     if (urlFond) URL.revokeObjectURL(urlFond);
     urlFond = URL.createObjectURL(f);
-    fond.onload = () => { definirMode('photo'); annoncer("Cale la référence sur ton dessin : un doigt pour déplacer, deux pour agrandir et tourner."); };
-    fond.onerror = () => annoncer("Cette photo ne s'ouvre pas. Essaie une image au format JPEG ou PNG.");
+    fond.onload = () => {
+      st.mode = 'photo';
+      fond.hidden = false; feuille.hidden = true;
+      majUI(); dessiner();
+      annoncer("Photo figée. Cale la référence dessus : un doigt pour déplacer, deux pour agrandir et tourner.");
+    };
+    fond.onerror = () => annoncer("Cette photo ne s'ouvre pas. Réessaie.");
     fond.src = urlFond;
   });
+
+  function chargerRef(f) {
+    if (!f || !f.type.startsWith('image/')) return;
+    if (urlRef) URL.revokeObjectURL(urlRef);
+    urlRef = URL.createObjectURL(f);
+    st.aCaler = true;
+    ref.src = urlRef;
+  }
+  ref.addEventListener('load', () => {
+    st.w = ref.naturalWidth; st.h = ref.naturalHeight;
+    ref.style.width = st.w + 'px'; ref.style.height = st.h + 'px';
+    if (st.aCaler) { st.aCaler = false; caler(); }
+    dessiner();
+  });
+  ref.addEventListener('error', () => {
+    if (ref.src === GABARIT) return;
+    annoncer("Cette image ne s'ouvre pas. Essaie une photo au format JPEG ou PNG.");
+    st.aCaler = true; ref.src = GABARIT;
+  });
+  ui.fichierRef.addEventListener('change', () => { chargerRef(ui.fichierRef.files[0]); ui.fichierRef.value = ''; });
+
   document.addEventListener('paste', e => {
     const f = [...((e.clipboardData && e.clipboardData.files) || [])].find(x => x.type.startsWith('image/'));
     if (f) { e.preventDefault(); chargerRef(f); }
@@ -508,28 +397,22 @@ input[type=range]:disabled{opacity:.35}
   });
 
   /* ---------- Commandes ---------- */
-  ui.camera.addEventListener('click', demarrerCamera);
-  // « Photo » et « Référence » sont des étiquettes liées aux champs fichier : le navigateur ouvre le sélecteur lui-même.
+  // « Prendre la photo » et « Référence » sont des étiquettes liées aux champs fichier : le navigateur ouvre l'appareil photo ou le sélecteur lui-même.
   for (const [lien, champ] of [[ui.photo, ui.fichierPhoto], [ui.reference, ui.fichierRef]]) {
     lien.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); champ.click(); } });
   }
-  ui.capturer.addEventListener('click', figer);
   ui.opacite.addEventListener('input', () => { st.opacite = ui.opacite.value / 100; majUI(); dessiner(); sauver(); });
   ui.colonnes.addEventListener('input', () => { st.colonnes = +ui.colonnes.value; majUI(); dessiner(); sauver(); });
   ui.grille.addEventListener('click', () => { st.grille = !st.grille; majUI(); dessiner(); sauver(); });
-  ui.nb.addEventListener('click', () => { st.gris = !st.gris; majUI(); dessiner(); sauver(); });
-  ui.flou.addEventListener('click', () => { st.flou = !st.flou; majUI(); dessiner(); sauver(); });
-  ui.miroir.addEventListener('click', () => { st.miroir = !st.miroir; majUI(); dessiner(); });
-  ui.verrou.addEventListener('click', () => { st.verrou = !st.verrou; doigts.clear(); majUI(); });
-  ui.centrer.addEventListener('click', caler);
   ui.reglages.addEventListener('click', () => {
     tiroir.hidden = !tiroir.hidden;
     ui.reglages.setAttribute('aria-expanded', !tiroir.hidden);
+    ui.reglages.textContent = tiroir.hidden ? 'Réglages' : 'Fermer';
   });
 
   new ResizeObserver(dessiner).observe(scene);
 
-  definirMode('repos');
+  majUI();
   ref.src = GABARIT;
 })();
 </script>
