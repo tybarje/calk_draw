@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
-/* Plein écran : la scène (feuille ou photo du dessin) occupe tout ; bouton Réglages flottant en haut à droite, tiroir graphite en bas, caché par défaut */
+/* Plein écran : la scène (feuille ou photo du dessin) occupe tout ; réglages compacts toujours visibles en bas, sans fond, chaque commande dans sa propre pastille */
 :root{
   --graphite:#1a1c20;
   --graphite-2:#24272c;
@@ -39,36 +39,36 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;margin
 #ref{position:absolute;left:0;top:0;max-width:none;transform-origin:50% 50%;pointer-events:none;will-change:transform}
 #grille{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
-.consigne{position:absolute;top:4.2rem;left:0;right:0;display:grid;gap:.3rem;max-width:36rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:.88rem;line-height:1.4}
+.consigne{position:absolute;top:1rem;left:0;right:0;display:grid;gap:.3rem;max-width:36rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:.88rem;line-height:1.4}
 .consigne h1{margin:0;font-family:var(--f-titre);font-style:italic;font-weight:400;font-size:1.45rem;line-height:1.1;text-wrap:balance}
 .consigne p{margin:0}
 .consigne .note{font-size:.8rem;color:var(--encre-doux)}
 
 /* Boutons */
 .cache{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0);pointer-events:none}
-.bouton{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;min-height:40px;padding:0 1rem;border-radius:999px;border:1px solid var(--mine);background:var(--graphite-2);font-size:.9rem;white-space:nowrap;flex:none}
-.bouton[aria-pressed="true"]{background:var(--hb);border-color:var(--hb);color:var(--graphite);font-weight:700}
+.bouton{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;min-height:36px;padding:0 .9rem;border-radius:999px;border:1px solid var(--mine);background:var(--voile);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:.85rem;white-space:nowrap;flex:none}
 .bouton.principal{flex:1;min-width:0;background:var(--hb);border-color:var(--hb);color:var(--graphite);font-weight:700}
-.flottant{position:absolute;z-index:3;top:.75rem;right:max(16px,env(safe-area-inset-right,0px));background:var(--voile);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 4px 16px var(--ombre)}
 
-/* Tiroir de réglages */
-.tiroir{position:absolute;left:0;right:0;bottom:0;z-index:3;background:var(--voile);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--mine)}
-.tiroir-in{display:grid;gap:.65rem;max-width:40rem;margin:0 auto;padding-block:.8rem .9rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.rang-source{display:flex;gap:.5rem;align-items:center;min-width:0}
-.reglage{display:grid;grid-template-columns:6rem minmax(0,1fr) 3.4rem;align-items:center;gap:.75rem}
-.reglage>label{font-size:.88rem}
-.reglage>.bouton{justify-self:start}
-.valeur{font-family:var(--f-chiffres);font-size:.82rem;text-align:right;font-variant-numeric:tabular-nums}
+/* Réglages : pas de fond de barre, seules les commandes sont opaques */
+.tiroir{position:absolute;left:0;right:0;bottom:0;z-index:3;pointer-events:none}
+.tiroir-in{display:grid;gap:.4rem;max-width:30rem;margin:0 auto;padding-block:.4rem .5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.tiroir-in>*{pointer-events:auto}
+.rang-source{display:flex;gap:.4rem;align-items:center;min-width:0}
+.pastille{display:grid;grid-template-columns:4.2rem minmax(0,1fr) 2.9rem;align-items:center;gap:.6rem;min-height:36px;padding:0 .8rem 0 .5rem;border-radius:999px;border:1px solid var(--mine);background:var(--voile);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.pastille>label{font-size:.8rem;padding-left:.35rem}
+.bascule{min-height:26px;padding:0 .6rem;border-radius:999px;border:1px solid var(--mine);font-size:.78rem;justify-self:start}
+.bascule[aria-pressed="true"]{background:var(--hb);border-color:var(--hb);color:var(--graphite);font-weight:700}
+.valeur{font-family:var(--f-chiffres);font-size:.75rem;text-align:right;font-variant-numeric:tabular-nums}
 
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;margin:0;background:transparent;--p:50%}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;margin:0;background:transparent;--p:50%}
 input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(var(--hb),var(--hb)) 0 0/var(--p) 100% no-repeat,var(--mine)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9px;border-radius:50%;background:var(--texte);border:3px solid var(--hb)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-7px;border-radius:50%;background:var(--texte);border:3px solid var(--hb)}
 input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--mine)}
 input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:var(--hb)}
-input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--texte);border:3px solid var(--hb)}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--texte);border:3px solid var(--hb)}
 input[type=range]:disabled{opacity:.35}
 
-.message{position:absolute;z-index:4;top:4rem;left:50%;transform:translateX(-50%);width:min(30rem,calc(100% - 32px));margin:0;padding:.7rem .9rem;border-radius:12px;background:var(--texte);color:var(--graphite);font-size:.88rem;line-height:1.4;box-shadow:0 6px 24px var(--ombre);cursor:pointer}
+.message{position:absolute;z-index:4;top:1rem;left:50%;transform:translateX(-50%);width:min(30rem,calc(100% - 32px));margin:0;padding:.7rem .9rem;border-radius:12px;background:var(--texte);color:var(--graphite);font-size:.88rem;line-height:1.4;box-shadow:0 6px 24px var(--ombre);cursor:pointer}
 </style>
 
 <div class="app">
@@ -76,7 +76,7 @@ input[type=range]:disabled{opacity:.35}
     <div class="feuille" id="feuille">
       <div class="consigne" id="consigne">
         <h1>Compare ton dessin au modèle</h1>
-        <p>Ouvre les réglages, prends ton dessin en photo, puis cale la référence par-dessus : un doigt la déplace, deux doigts l'agrandissent et la tournent.</p>
+        <p>Prends ton dessin en photo avec le bouton jaune, puis cale la référence par-dessus : un doigt la déplace, deux doigts l'agrandissent et la tournent.</p>
         <p class="note">Gabarit de proportions affiché en exemple. Charge ta photo de modèle avec « Référence ».</p>
       </div>
     </div>
@@ -87,25 +87,23 @@ input[type=range]:disabled{opacity:.35}
     <canvas id="grille" aria-hidden="true"></canvas>
   </div>
 
-  <button class="bouton flottant" id="btn-reglages" type="button" aria-expanded="false" aria-controls="tiroir">Réglages</button>
-
   <p class="message" id="message" role="status" hidden></p>
 
-  <section class="tiroir" id="tiroir" aria-label="Réglages" hidden>
+  <section class="tiroir" id="tiroir" aria-label="Réglages">
     <div class="tiroir-in">
       <div class="rang-source">
         <label class="bouton principal" for="fichier-photo" id="btn-photo" role="button" tabindex="0">Prendre la photo</label>
         <label class="bouton" for="fichier-ref" id="btn-reference" role="button" tabindex="0">Référence</label>
       </div>
 
-      <div class="reglage">
+      <div class="pastille">
         <label for="opacite">Opacité</label>
         <input type="range" id="opacite" min="0" max="100" step="1" value="50">
         <output class="valeur" id="opacite-val" for="opacite">50 %</output>
       </div>
 
-      <div class="reglage">
-        <button class="bouton" type="button" id="btn-grille" aria-pressed="true">Grille</button>
+      <div class="pastille">
+        <button class="bascule" type="button" id="btn-grille" aria-pressed="true">Grille</button>
         <input type="range" id="colonnes" min="2" max="16" step="1" value="6" aria-label="Nombre de colonnes du quadrillage">
         <output class="valeur" id="colonnes-val" for="colonnes">6 col.</output>
       </div>
@@ -122,7 +120,7 @@ input[type=range]:disabled{opacity:.35}
   const scene = $('#scene'), fond = $('#fond'), ref = $('#ref'), grille = $('#grille');
   const feuille = $('#feuille'), tiroir = $('#tiroir'), message = $('#message');
   const ui = {
-    photo: $('#btn-photo'), reference: $('#btn-reference'), reglages: $('#btn-reglages'),
+    photo: $('#btn-photo'), reference: $('#btn-reference'),
     opacite: $('#opacite'), opaciteVal: $('#opacite-val'),
     grille: $('#btn-grille'), colonnes: $('#colonnes'), colonnesVal: $('#colonnes-val'),
     fichierRef: $('#fichier-ref'), fichierPhoto: $('#fichier-photo')
@@ -279,9 +277,9 @@ input[type=range]:disabled{opacity:.35}
   function caler() {
     if (!st.w) return;
     const W = scene.clientWidth, H = scene.clientHeight;
-    let haut = ui.reglages.offsetTop + ui.reglages.offsetHeight + 8;
+    let haut = 12;
     if (st.mode === 'repos') { const c = $('#consigne'); haut = Math.max(haut, c.offsetTop + c.offsetHeight + 8); }
-    const bas = tiroir.hidden ? H : tiroir.offsetTop;
+    const bas = tiroir.offsetTop;
     const dispo = Math.max(140, bas - haut);
     st.s = Math.min(W * 0.88 / st.w, dispo * 0.9 / st.h);
     st.r = 0; st.tx = 0; st.ty = (haut + bas) / 2 - H / 2;
@@ -404,11 +402,6 @@ input[type=range]:disabled{opacity:.35}
   ui.opacite.addEventListener('input', () => { st.opacite = ui.opacite.value / 100; majUI(); dessiner(); sauver(); });
   ui.colonnes.addEventListener('input', () => { st.colonnes = +ui.colonnes.value; majUI(); dessiner(); sauver(); });
   ui.grille.addEventListener('click', () => { st.grille = !st.grille; majUI(); dessiner(); sauver(); });
-  ui.reglages.addEventListener('click', () => {
-    tiroir.hidden = !tiroir.hidden;
-    ui.reglages.setAttribute('aria-expanded', !tiroir.hidden);
-    ui.reglages.textContent = tiroir.hidden ? 'Réglages' : 'Fermer';
-  });
 
   new ResizeObserver(dessiner).observe(scene);
 
