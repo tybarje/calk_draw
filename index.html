@@ -4,14 +4,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
-/* Plein écran : la scène (feuille ou photo du dessin) occupe tout ; réglages compacts toujours visibles en bas, sans fond, chaque commande dans sa propre pastille */
+/* Plein écran : la scène (feuille ou photo du dessin) occupe tout ; commandes compactes toujours visibles en bas, sans fond de barre */
 :root{
   --graphite:#1a1c20;
-  --graphite-2:#24272c;
   --voile:rgba(26,28,32,.88);
   --mine:#3b3f47;
   --texte:#eeeae1;
-  --texte-doux:#a9a59c;
   --hb:#f2c230;
   --papier:#f1ece1;
   --carreau:rgba(96,118,160,.20);
@@ -33,28 +31,32 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;margin
 
 /* Scène */
 .scene{position:absolute;inset:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;background:var(--graphite)}
-.feuille{position:absolute;inset:0;background-color:var(--papier);background-image:linear-gradient(var(--carreau) 1px,transparent 1px),linear-gradient(90deg,var(--carreau) 1px,transparent 1px);background-size:20px 20px;color:var(--encre)}
+.feuille{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-block:1rem 8rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background-color:var(--papier);background-image:linear-gradient(var(--carreau) 1px,transparent 1px),linear-gradient(90deg,var(--carreau) 1px,transparent 1px);background-size:20px 20px;color:var(--encre)}
 .monde{position:absolute;inset:0}
 #fond{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:contain;background:var(--graphite)}
 #ref{position:absolute;left:0;top:0;max-width:none;transform-origin:50% 50%;pointer-events:none;will-change:transform}
 #grille{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
-.consigne{position:absolute;top:1rem;left:0;right:0;display:grid;gap:.3rem;max-width:36rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));font-size:.88rem;line-height:1.4}
-.consigne h1{margin:0;font-family:var(--f-titre);font-style:italic;font-weight:400;font-size:1.45rem;line-height:1.1;text-wrap:balance}
-.consigne p{margin:0}
-.consigne .note{font-size:.8rem;color:var(--encre-doux)}
+/* Accueil : les trois étapes */
+.consigne{width:100%;max-width:30rem;margin:0 auto;display:grid;gap:1rem}
+.consigne h1{margin:0;font-family:var(--f-titre);font-style:italic;font-weight:400;font-size:1.8rem;line-height:1.05;text-wrap:balance}
+.etapes{list-style:none;margin:0;padding:0;display:grid;gap:.75rem;counter-reset:etape}
+.etapes li{display:grid;grid-template-columns:1.8rem minmax(0,1fr);gap:.5rem;align-items:baseline;counter-increment:etape;font-size:.95rem;line-height:1.4}
+.etapes li::before{content:counter(etape);font-family:var(--f-titre);font-style:italic;font-size:1.7rem;line-height:1}
+.consigne .note{margin:0;font-size:.82rem;color:var(--encre-doux)}
 
-/* Boutons */
+/* Commandes */
 .cache{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0);pointer-events:none}
 .bouton{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;min-height:36px;padding:0 .9rem;border-radius:999px;border:1px solid var(--mine);background:var(--voile);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:.85rem;white-space:nowrap;flex:none}
 .bouton.principal{flex:1;min-width:0;background:var(--hb);border-color:var(--hb);color:var(--graphite);font-weight:700}
 
-/* Réglages : pas de fond de barre, seules les commandes sont opaques */
 .tiroir{position:absolute;left:0;right:0;bottom:0;z-index:3;pointer-events:none}
-.tiroir-in{display:grid;gap:.4rem;max-width:30rem;margin:0 auto;padding-block:.4rem .5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.tiroir-in>*{pointer-events:auto}
-.rang-source{display:flex;gap:.4rem;align-items:center;min-width:0}
+.tiroir-in{max-width:30rem;margin:0 auto;padding-block:.4rem .5rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.groupe{display:grid;gap:.4rem}
+.groupe>*{pointer-events:auto}
+.rang{display:flex;gap:.4rem;align-items:center;min-width:0}
 .pastille{display:grid;grid-template-columns:4.2rem minmax(0,1fr) 2.9rem;align-items:center;gap:.6rem;min-height:36px;padding:0 .8rem 0 .5rem;border-radius:999px;border:1px solid var(--mine);background:var(--voile);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.rang>.pastille{flex:1;min-width:0}
 .pastille>label{font-size:.8rem;padding-left:.35rem}
 .bascule{min-height:26px;padding:0 .6rem;border-radius:999px;border:1px solid var(--mine);font-size:.78rem;justify-self:start}
 .bascule[aria-pressed="true"]{background:var(--hb);border-color:var(--hb);color:var(--graphite);font-weight:700}
@@ -72,40 +74,51 @@ input[type=range]:disabled{opacity:.35}
 </style>
 
 <div class="app">
-  <div class="scene" id="scene" aria-label="Zone de comparaison : un doigt déplace la référence, deux doigts l'agrandissent et la tournent">
+  <div class="scene" id="scene" aria-label="Zone de superposition : un doigt déplace, deux doigts agrandissent et tournent">
     <div class="feuille" id="feuille">
-      <div class="consigne" id="consigne">
-        <h1>Compare ton dessin au modèle</h1>
-        <p>Prends ton dessin en photo avec le bouton jaune, puis cale la référence par-dessus : un doigt la déplace, deux doigts l'agrandissent et la tournent.</p>
-        <p class="note">Gabarit de proportions affiché en exemple. Charge ta photo de modèle avec « Référence ».</p>
+      <div class="consigne">
+        <h1>Superpose ton modèle sur ton dessin</h1>
+        <ol class="etapes">
+          <li><span><b>Prendre la photo</b> : photographie ton dessin.</span></li>
+          <li><span><b>Référence</b> : choisis la photo du modèle que tu as dessiné.</span></li>
+          <li><span>Fais glisser le modèle sur ton dessin, pince pour l'agrandir ou le tourner, puis règle l'opacité : les écarts sautent aux yeux.</span></li>
+        </ol>
+        <p class="note">« Options » ajoute une grille par-dessus le tout.</p>
       </div>
     </div>
     <div class="monde">
       <img id="fond" alt="Photo de ton dessin" hidden>
-      <img id="ref" alt="" draggable="false" decoding="async">
+      <img id="ref" alt="" draggable="false" decoding="async" hidden>
     </div>
     <canvas id="grille" aria-hidden="true"></canvas>
   </div>
 
   <p class="message" id="message" role="status" hidden></p>
 
-  <section class="tiroir" id="tiroir" aria-label="Réglages">
+  <section class="tiroir" aria-label="Commandes">
     <div class="tiroir-in">
-      <div class="rang-source">
-        <label class="bouton principal" for="fichier-photo" id="btn-photo" role="button" tabindex="0">Prendre la photo</label>
-        <label class="bouton" for="fichier-ref" id="btn-reference" role="button" tabindex="0">Référence</label>
+      <div class="groupe" id="barre-principale">
+        <div class="rang">
+          <label class="bouton principal" for="fichier-photo" id="btn-photo" role="button" tabindex="0">Prendre la photo</label>
+          <label class="bouton" for="fichier-ref" id="btn-reference" role="button" tabindex="0">Référence</label>
+          <button class="bouton" type="button" id="btn-options">Options</button>
+        </div>
+        <div class="pastille">
+          <label for="opacite">Opacité</label>
+          <input type="range" id="opacite" min="0" max="100" step="1" value="50">
+          <output class="valeur" id="opacite-val" for="opacite">50 %</output>
+        </div>
       </div>
 
-      <div class="pastille">
-        <label for="opacite">Opacité</label>
-        <input type="range" id="opacite" min="0" max="100" step="1" value="50">
-        <output class="valeur" id="opacite-val" for="opacite">50 %</output>
-      </div>
-
-      <div class="pastille">
-        <button class="bascule" type="button" id="btn-grille" aria-pressed="true">Grille</button>
-        <input type="range" id="colonnes" min="2" max="16" step="1" value="6" aria-label="Nombre de colonnes du quadrillage">
-        <output class="valeur" id="colonnes-val" for="colonnes">6 col.</output>
+      <div class="groupe" id="barre-grille" hidden>
+        <div class="rang">
+          <div class="pastille">
+            <button class="bascule" type="button" id="btn-grille" aria-pressed="true">Grille</button>
+            <input type="range" id="colonnes" min="2" max="16" step="1" value="6" aria-label="Nombre de colonnes de la grille">
+            <output class="valeur" id="colonnes-val" for="colonnes">6 col.</output>
+          </div>
+          <button class="bouton principal" type="button" id="btn-terminer" style="flex:none">Terminer</button>
+        </div>
       </div>
     </div>
   </section>
@@ -117,148 +130,90 @@ input[type=range]:disabled{opacity:.35}
 <script>
 (() => {
   const $ = s => document.querySelector(s);
-  const scene = $('#scene'), fond = $('#fond'), ref = $('#ref'), grille = $('#grille');
-  const feuille = $('#feuille'), tiroir = $('#tiroir'), message = $('#message');
+  const scene = $('#scene'), fond = $('#fond'), ref = $('#ref'), toile = $('#grille');
+  const feuille = $('#feuille'), message = $('#message');
   const ui = {
-    photo: $('#btn-photo'), reference: $('#btn-reference'),
+    photo: $('#btn-photo'), reference: $('#btn-reference'), options: $('#btn-options'), terminer: $('#btn-terminer'),
+    principale: $('#barre-principale'), barreGrille: $('#barre-grille'),
     opacite: $('#opacite'), opaciteVal: $('#opacite-val'),
     grille: $('#btn-grille'), colonnes: $('#colonnes'), colonnesVal: $('#colonnes-val'),
     fichierRef: $('#fichier-ref'), fichierPhoto: $('#fichier-photo')
   };
 
-  // État : position du centre de la référence (tx, ty) par rapport au centre de la scène, échelle s, rotation r
-  const st = { mode: 'repos', tx: 0, ty: 0, s: 1, r: 0, w: 0, h: 0, aCaler: true, opacite: 0.5, grille: true, colonnes: 6 };
+  // Deux objets manipulables au doigt, repérés par leur centre (x, y) en pixels d'écran, leur échelle s et leur rotation r.
+  // ref : w, h = taille réelle de l'image. grille : w, h = taille de base du cadre quadrillé.
+  const st = {
+    photo: false, modeGrille: false, opacite: 0.5, colonnes: 6,
+    ref: { x: 0, y: 0, s: 1, r: 0, w: 0, h: 0 },
+    grille: { actif: false, x: 0, y: 0, s: 1, r: 0, w: 0, h: 0 }
+  };
 
-  const CLE = 'calk-draw-v1';
+  const CLE = 'calk-draw-v2';
   try {
     const p = JSON.parse(localStorage.getItem(CLE) || '{}');
     if (typeof p.opacite === 'number') st.opacite = Math.min(1, Math.max(0, p.opacite));
     if (typeof p.colonnes === 'number') st.colonnes = Math.min(16, Math.max(2, Math.round(p.colonnes)));
-    if (typeof p.grille === 'boolean') st.grille = p.grille;
   } catch (e) {}
   function sauver() {
-    try { localStorage.setItem(CLE, JSON.stringify({ opacite: st.opacite, colonnes: st.colonnes, grille: st.grille })); } catch (e) {}
+    try { localStorage.setItem(CLE, JSON.stringify({ opacite: st.opacite, colonnes: st.colonnes })); } catch (e) {}
   }
 
   const hb = getComputedStyle(document.documentElement).getPropertyValue('--hb').trim() || '#f2c230';
 
-  /* ---------- Gabarit de proportions (référence d'exemple) ---------- */
-  function gabarit() {
-    const c = document.createElement('canvas');
-    c.width = 820; c.height = 820;
-    const g = c.getContext('2d');
-    const bleu = '#1f4fd1', bleuClair = 'rgba(31,79,209,.5)';
-    const L = 140, R = 540, X = 340, T = 110, M = 710;
-    const lignes = [[110, 'haut du crâne'], [200, 'cheveux'], [362, 'sourcils', 370], [418, 'yeux : mi-hauteur', 410], [540, 'bas du nez'], [597, 'bouche'], [710, 'menton']];
-    g.lineCap = 'round'; g.lineJoin = 'round';
-
-    g.setLineDash([10, 9]); g.lineWidth = 2; g.strokeStyle = bleuClair;
-    for (const [yt, , yl] of lignes) { const y = yl || yt; g.beginPath(); g.moveTo(96, y); g.lineTo(570, y); g.stroke(); }
-    g.beginPath(); g.moveTo(X, 80); g.lineTo(X, 740); g.stroke();
-    g.setLineDash([]);
-
-    g.strokeStyle = bleu; g.fillStyle = bleu;
-    g.lineWidth = 5;
-    g.beginPath(); g.moveTo(L, 410);
-    g.bezierCurveTo(L, 220, 230, T, X, T);
-    g.bezierCurveTo(450, T, R, 220, R, 410);
-    g.bezierCurveTo(R, 515, 526, 580, 500, 625);
-    g.bezierCurveTo(458, 684, 400, M, X, M);
-    g.bezierCurveTo(280, M, 222, 684, 180, 625);
-    g.bezierCurveTo(154, 580, L, 515, L, 410);
-    g.stroke();
-
-    g.lineWidth = 4;
-    g.beginPath(); g.moveTo(L + 2, 385); g.bezierCurveTo(L - 34, 370, L - 40, 520, L + 4, 545); g.stroke();
-    g.beginPath(); g.moveTo(R - 2, 385); g.bezierCurveTo(R + 34, 370, R + 40, 520, R - 4, 545); g.stroke();
-
-    g.lineWidth = 5;
-    g.beginPath(); g.moveTo(208, 378); g.quadraticCurveTo(255, 352, 306, 368); g.stroke();
-    g.beginPath(); g.moveTo(472, 378); g.quadraticCurveTo(425, 352, 374, 368); g.stroke();
-
-    g.lineWidth = 3.5;
-    for (const [a, b] of [[220, 300], [380, 460]]) {
-      g.beginPath(); g.moveTo(a, 410); g.quadraticCurveTo((a + b) / 2, 382, b, 410); g.quadraticCurveTo((a + b) / 2, 434, a, 410); g.stroke();
-      g.beginPath(); g.arc((a + b) / 2, 409, 9, 0, Math.PI * 2); g.fill();
-    }
-    g.beginPath(); g.moveTo(318, 540); g.quadraticCurveTo(340, 552, 362, 540); g.stroke();
-    g.beginPath(); g.moveTo(318, 540); g.quadraticCurveTo(300, 532, 306, 518); g.stroke();
-    g.beginPath(); g.moveTo(362, 540); g.quadraticCurveTo(380, 532, 374, 518); g.stroke();
-    g.lineWidth = 4;
-    g.beginPath(); g.moveTo(286, 597); g.quadraticCurveTo(340, 607, 394, 597); g.stroke();
-
-    // cinq largeurs d'œil sur la largeur du visage
-    g.lineWidth = 2.5;
-    g.beginPath(); g.moveTo(140, 453); g.lineTo(540, 453); g.stroke();
-    for (const x of [140, 220, 300, 380, 460, 540]) { g.beginPath(); g.moveTo(x, 444); g.lineTo(x, 462); g.stroke(); }
-    // trois tiers égaux
-    for (const [a, b] of [[200, 370], [370, 540], [540, 710]]) {
-      g.beginPath(); g.moveTo(72, a + 5); g.lineTo(62, a + 5); g.lineTo(62, b - 5); g.lineTo(72, b - 5); g.stroke();
-    }
-
-    const etiquette = (t, x, y, align) => {
-      g.font = '700 22px "Atkinson Hyperlegible", system-ui, sans-serif';
-      g.textAlign = align; g.textBaseline = 'middle';
-      g.lineWidth = 6; g.strokeStyle = 'rgba(255,255,255,.85)'; g.strokeText(t, x, y);
-      g.fillStyle = bleu; g.fillText(t, x, y);
-    };
-    for (const [yt, t] of lignes) etiquette(t, 582, yt, 'left');
-    for (const [a, b] of [[200, 370], [370, 540], [540, 710]]) etiquette('⅓', 50, (a + b) / 2, 'right');
-    etiquette("5 largeurs d'œil", X, 486, 'center');
-    return c.toDataURL('image/png');
+  /* ---------- Zone visible entre le haut de l'écran et les commandes ---------- */
+  function zone() {
+    const W = scene.clientWidth, H = scene.clientHeight;
+    const haut = 12, bas = $('.tiroir').offsetTop - 8;
+    return { W, H, haut, bas, cy: (haut + bas) / 2, dispo: Math.max(140, bas - haut) };
   }
-  const GABARIT = gabarit();
 
   /* ---------- Rendu ---------- */
   let raf = 0;
   function dessiner() { if (!raf) raf = requestAnimationFrame(() => { raf = 0; rendu(); }); }
 
   function rendu() {
-    const W = scene.clientWidth, H = scene.clientHeight;
-    if (st.w) ref.style.transform = `translate(${W / 2 + st.tx - st.w / 2}px,${H / 2 + st.ty - st.h / 2}px) rotate(${st.r}rad) scale(${st.s})`;
+    const R = st.ref;
+    if (R.w) ref.style.transform = `translate(${R.x - R.w / 2}px,${R.y - R.h / 2}px) rotate(${R.r}rad) scale(${R.s})`;
     ref.style.opacity = st.opacite;
-    tracerGrille(W, H);
+    tracerGrille();
   }
 
-  function tracerGrille(W, H) {
+  function tracerGrille() {
+    const W = scene.clientWidth, H = scene.clientHeight;
     const dpr = Math.min(window.devicePixelRatio || 1, 3);
     const cw = Math.round(W * dpr), ch = Math.round(H * dpr);
-    if (grille.width !== cw || grille.height !== ch) { grille.width = cw; grille.height = ch; }
-    const g = grille.getContext('2d');
+    if (toile.width !== cw || toile.height !== ch) { toile.width = cw; toile.height = ch; }
+    const g = toile.getContext('2d');
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.clearRect(0, 0, W, H);
-    if (!st.grille || !st.w) return;
+    const G = st.grille;
+    if (!G.actif) return;
 
-    const w = st.w, h = st.h, cote = w / st.colonnes;
-    const cos = Math.cos(st.r) * st.s, sin = Math.sin(st.r) * st.s;
-    const cx = W / 2 + st.tx, cy = H / 2 + st.ty;
-    const P = (u, v) => {
-      const x = u - w / 2, y = v - h / 2;
-      return [cx + x * cos - y * sin, cy + x * sin + y * cos];
-    };
+    const n = st.colonnes, cote = G.w / n;
+    const lignes = Math.max(1, Math.round(G.h / cote));
+    const larg = G.w, haut = lignes * cote;
+    const cos = Math.cos(G.r) * G.s, sin = Math.sin(G.r) * G.s;
+    const P = (u, v) => { const x = u - larg / 2, y = v - haut / 2; return [G.x + x * cos - y * sin, G.y + x * sin + y * cos]; };
+
     const segs = [];
-    for (let i = 0; i <= st.colonnes; i++) segs.push([P(i * cote, 0), P(i * cote, h)]);
-    const nPleines = Math.floor(h / cote + 1e-6);
-    for (let k = 0; k <= nPleines; k++) segs.push([P(0, k * cote), P(w, k * cote)]);
-    if (h - nPleines * cote > 1e-3) segs.push([P(0, h), P(w, h)]);
-
+    for (let i = 0; i <= n; i++) segs.push([P(i * cote, 0), P(i * cote, haut)]);
+    for (let k = 0; k <= lignes; k++) segs.push([P(0, k * cote), P(larg, k * cote)]);
     const trace = (largeur, couleur) => {
       g.lineWidth = largeur; g.strokeStyle = couleur; g.beginPath();
       for (const [a, b] of segs) { g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); }
       g.stroke();
     };
-    trace(3, 'rgba(20,22,26,.55)');
-    trace(1.25, hb);
+    trace(st.modeGrille ? 3.5 : 3, 'rgba(20,22,26,.55)');
+    trace(st.modeGrille ? 1.75 : 1.25, hb);
 
     // repères des cases : lettres pour les colonnes, chiffres pour les lignes
-    if (cote * st.s >= 22) {
+    if (cote * G.s >= 22) {
       g.font = '500 12px "IBM Plex Mono", ui-monospace, monospace';
       g.textAlign = 'center'; g.textBaseline = 'middle'; g.lineJoin = 'round';
-      const ecart = 13 / st.s;
+      const ecart = 11 / G.s;
       const ecrire = (t, [x, y]) => { g.lineWidth = 3.5; g.strokeStyle = 'rgba(20,22,26,.8)'; g.strokeText(t, x, y); g.fillStyle = hb; g.fillText(t, x, y); };
-      for (let i = 0; i < st.colonnes; i++) ecrire(String.fromCharCode(65 + i), P((i + 0.5) * cote, -ecart));
-      const nLignes = Math.ceil(h / cote - 0.3);
-      for (let k = 0; k < nLignes; k++) ecrire(String(k + 1), P(-ecart, Math.min((k + 0.5) * cote, h - 4 / st.s)));
+      for (let i = 0; i < n; i++) ecrire(String.fromCharCode(65 + i), P((i + 0.5) * cote, -ecart));
+      for (let k = 0; k < lignes; k++) ecrire(String(k + 1), P(-ecart, (k + 0.5) * cote));
     }
   }
 
@@ -267,59 +222,62 @@ input[type=range]:disabled{opacity:.35}
     ui.opaciteVal.textContent = Math.round(st.opacite * 100) + ' %';
     ui.colonnes.value = st.colonnes;
     ui.colonnesVal.textContent = st.colonnes + ' col.';
-    ui.colonnes.disabled = !st.grille;
+    ui.colonnes.disabled = !st.grille.actif;
     for (const el of [ui.opacite, ui.colonnes]) el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%');
-    ui.grille.setAttribute('aria-pressed', st.grille);
-    ui.photo.textContent = st.mode === 'photo' ? 'Reprendre la photo' : 'Prendre la photo';
+    ui.grille.setAttribute('aria-pressed', st.grille.actif);
+    ui.photo.textContent = st.photo ? 'Reprendre la photo' : 'Prendre la photo';
+    ui.principale.hidden = st.modeGrille;
+    ui.barreGrille.hidden = !st.modeGrille;
+    feuille.hidden = st.photo || !!st.ref.w;
   }
 
-  /* ---------- Cadrage automatique de la référence ---------- */
-  function caler() {
-    if (!st.w) return;
-    const W = scene.clientWidth, H = scene.clientHeight;
-    let haut = 12;
-    if (st.mode === 'repos') { const c = $('#consigne'); haut = Math.max(haut, c.offsetTop + c.offsetHeight + 8); }
-    const bas = tiroir.offsetTop;
-    const dispo = Math.max(140, bas - haut);
-    st.s = Math.min(W * 0.88 / st.w, dispo * 0.9 / st.h);
-    st.r = 0; st.tx = 0; st.ty = (haut + bas) / 2 - H / 2;
-    dessiner();
+  /* ---------- Cadrages automatiques ---------- */
+  function calerRef() {
+    const R = st.ref; if (!R.w) return;
+    const z = zone();
+    R.s = Math.min(z.W * 0.88 / R.w, z.dispo * 0.9 / R.h);
+    R.r = 0; R.x = z.W / 2; R.y = z.cy;
+  }
+  function calerGrille() {
+    const G = st.grille, z = zone();
+    G.w = z.W - 48; G.h = z.dispo - 32;
+    G.s = 1; G.r = 0; G.x = z.W / 2; G.y = z.cy + 6;
   }
 
-  /* ---------- Gestes ---------- */
+  /* ---------- Gestes : la référence en mode normal, la grille en mode grille ---------- */
   const doigts = new Map();
+  const cible = () => st.modeGrille ? (st.grille.actif ? st.grille : null) : (st.ref.w ? st.ref : null);
   function pos(e) {
     const b = scene.getBoundingClientRect();
     return { x: e.clientX - b.left, y: e.clientY - b.top };
   }
   // Similitude autour du point de pincement : c0 → c1, facteur k, rotation dt
-  function transformer(c0, c1, k, dt) {
-    const W = scene.clientWidth, H = scene.clientHeight;
-    const sNouv = Math.min(60, Math.max(0.005, st.s * k));
-    k = sNouv / st.s;
-    const dx = W / 2 + st.tx - c0.x, dy = H / 2 + st.ty - c0.y;
+  function transformer(o, c0, c1, k, dt) {
+    const sNouv = Math.min(60, Math.max(0.005, o.s * k));
+    k = sNouv / o.s;
+    const dx = o.x - c0.x, dy = o.y - c0.y;
     const c = Math.cos(dt), s = Math.sin(dt);
-    st.tx = c1.x + k * (dx * c - dy * s) - W / 2;
-    st.ty = c1.y + k * (dx * s + dy * c) - H / 2;
-    st.s = sNouv; st.r += dt;
+    o.x = c1.x + k * (dx * c - dy * s);
+    o.y = c1.y + k * (dx * s + dy * c);
+    o.s = sNouv; o.r += dt;
   }
   scene.addEventListener('pointerdown', e => {
-    if (!st.w) return;
+    if (!cible()) return;
     try { scene.setPointerCapture(e.pointerId); } catch (err) {}
     doigts.set(e.pointerId, pos(e));
   });
   scene.addEventListener('pointermove', e => {
-    const p = doigts.get(e.pointerId);
-    if (!p) return;
+    const p = doigts.get(e.pointerId), o = cible();
+    if (!p || !o) return;
     const q = pos(e);
-    if (doigts.size === 1) { st.tx += q.x - p.x; st.ty += q.y - p.y; }
+    if (doigts.size === 1) { o.x += q.x - p.x; o.y += q.y - p.y; }
     else {
       let a = null;
       for (const [id, v] of doigts) if (id !== e.pointerId) { a = v; break; }
       const d0 = Math.hypot(p.x - a.x, p.y - a.y), d1 = Math.hypot(q.x - a.x, q.y - a.y);
       if (d0 > 4) {
         const dt = Math.atan2(q.y - a.y, q.x - a.x) - Math.atan2(p.y - a.y, p.x - a.x);
-        transformer({ x: (p.x + a.x) / 2, y: (p.y + a.y) / 2 }, { x: (q.x + a.x) / 2, y: (q.y + a.y) / 2 }, d1 / d0, dt);
+        transformer(o, { x: (p.x + a.x) / 2, y: (p.y + a.y) / 2 }, { x: (q.x + a.x) / 2, y: (q.y + a.y) / 2 }, d1 / d0, dt);
       }
     }
     doigts.set(e.pointerId, q);
@@ -329,10 +287,10 @@ input[type=range]:disabled{opacity:.35}
   scene.addEventListener('pointerup', lacher);
   scene.addEventListener('pointercancel', lacher);
   scene.addEventListener('wheel', e => {
-    if (!st.w) return;
+    const o = cible(); if (!o) return;
     e.preventDefault();
     const c = pos(e);
-    transformer(c, c, Math.exp(-e.deltaY * 0.0015), 0);
+    transformer(o, c, c, Math.exp(-e.deltaY * 0.0015), 0);
     dessiner();
   }, { passive: false });
 
@@ -354,10 +312,9 @@ input[type=range]:disabled{opacity:.35}
     if (urlFond) URL.revokeObjectURL(urlFond);
     urlFond = URL.createObjectURL(f);
     fond.onload = () => {
-      st.mode = 'photo';
-      fond.hidden = false; feuille.hidden = true;
+      st.photo = true; fond.hidden = false;
       majUI(); dessiner();
-      annoncer("Photo figée. Cale la référence dessus : un doigt pour déplacer, deux pour agrandir et tourner.");
+      annoncer(st.ref.w ? "Photo prise. Fais glisser la référence pour la caler sur ton dessin." : "Photo prise. Choisis maintenant ta référence.");
     };
     fond.onerror = () => annoncer("Cette photo ne s'ouvre pas. Réessaie.");
     fond.src = urlFond;
@@ -367,19 +324,19 @@ input[type=range]:disabled{opacity:.35}
     if (!f || !f.type.startsWith('image/')) return;
     if (urlRef) URL.revokeObjectURL(urlRef);
     urlRef = URL.createObjectURL(f);
-    st.aCaler = true;
     ref.src = urlRef;
   }
   ref.addEventListener('load', () => {
-    st.w = ref.naturalWidth; st.h = ref.naturalHeight;
-    ref.style.width = st.w + 'px'; ref.style.height = st.h + 'px';
-    if (st.aCaler) { st.aCaler = false; caler(); }
-    dessiner();
+    const R = st.ref;
+    R.w = ref.naturalWidth; R.h = ref.naturalHeight;
+    ref.style.width = R.w + 'px'; ref.style.height = R.h + 'px';
+    ref.hidden = false;
+    calerRef(); majUI(); dessiner();
+    annoncer(st.photo ? "Fais glisser la référence sur ton dessin, pince pour l'agrandir ou la tourner, puis règle l'opacité." : "Référence chargée. Prends maintenant ton dessin en photo.");
   });
   ref.addEventListener('error', () => {
-    if (ref.src === GABARIT) return;
+    if (!ref.getAttribute('src')) return;
     annoncer("Cette image ne s'ouvre pas. Essaie une photo au format JPEG ou PNG.");
-    st.aCaler = true; ref.src = GABARIT;
   });
   ui.fichierRef.addEventListener('change', () => { chargerRef(ui.fichierRef.files[0]); ui.fichierRef.value = ''; });
 
@@ -400,13 +357,27 @@ input[type=range]:disabled{opacity:.35}
     lien.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); champ.click(); } });
   }
   ui.opacite.addEventListener('input', () => { st.opacite = ui.opacite.value / 100; majUI(); dessiner(); sauver(); });
+
+  ui.options.addEventListener('click', () => {
+    st.modeGrille = true; doigts.clear();
+    if (!st.grille.actif) { st.grille.actif = true; calerGrille(); }
+    majUI(); dessiner();
+    annoncer("Mode grille : un doigt déplace la grille, deux doigts l'agrandissent ou la tournent. « Terminer » pour revenir à la référence.");
+  });
+  ui.terminer.addEventListener('click', () => {
+    st.modeGrille = false; doigts.clear();
+    majUI(); dessiner();
+    message.hidden = true;
+  });
+  ui.grille.addEventListener('click', () => {
+    st.grille.actif = !st.grille.actif;
+    if (st.grille.actif) calerGrille();
+    majUI(); dessiner();
+  });
   ui.colonnes.addEventListener('input', () => { st.colonnes = +ui.colonnes.value; majUI(); dessiner(); sauver(); });
-  ui.grille.addEventListener('click', () => { st.grille = !st.grille; majUI(); dessiner(); sauver(); });
 
   new ResizeObserver(dessiner).observe(scene);
-
   majUI();
-  ref.src = GABARIT;
 })();
 </script>
 </body></html>
